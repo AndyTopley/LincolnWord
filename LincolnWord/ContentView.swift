@@ -11,6 +11,7 @@ struct ContentView: View {
     
     @State private var word = ""
     @FocusState private var isTextFieldFocused: Bool
+    @State private var textCaseSwitch = 0
     
     var body: some View {
         VStack {
@@ -20,8 +21,9 @@ struct ContentView: View {
             Text(word)
                 .font(.system(size: 300, weight: .heavy, design: .rounded))
                 .animation(.easeInOut (duration: 0.15))
-                .textCase(.uppercase)
                 .minimumScaleFactor(0.1)
+                .textCase(textCaseSwitch == 1 ? .lowercase : .uppercase)
+                
                 .scaledToFit()
             
             
@@ -58,6 +60,15 @@ struct ContentView: View {
                                         , alignment: .trailing
                                     )
                                 .animation(.default, value: word) // Animate the button's appearance
+                
+                Button("Capitalise") {
+                    if textCaseSwitch == 0 {
+                        textCaseSwitch = 1
+                    } else {
+                        textCaseSwitch = 0
+                    }
+                    print(textCaseSwitch)
+                }
                 Spacer()
             }
             
@@ -69,6 +80,9 @@ struct ContentView: View {
         .padding()
         .foregroundStyle(.accent)
         .background(Color.background)
+        .onTapGesture {
+            isTextFieldFocused = false
+        }
         .onAppear(){
             isTextFieldFocused = true
         }
